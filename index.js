@@ -4,6 +4,7 @@ const dotenv = require('dotenv')
 const userRoute = require('./routes/customer/user')
 const authRoute = require('./routes/customer/auth')
 const orderRoute = require('./routes/customer/order')
+const cartRoute = require('./routes/customer/cart')
 
 const app = express()
 
@@ -15,6 +16,7 @@ app.use(express.json())
 app.use('/api/user', userRoute)
 app.use('/api/auth', authRoute)
 app.use('/api/order', orderRoute)
+app.use('/api/cart', cartRoute)
 
 mongoose
   .connect(process.env.MONGO_URL)

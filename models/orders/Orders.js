@@ -12,7 +12,8 @@ const OrderItemSchema = new mongoose.Schema(
         clientEmail : {type: String, required: true},
         servicePrice : {type: Number},
         professionalName : {type: String, default: null},
-        orderItemStatus : {type: String, default: "Pending"}
+        orderItemStatus : {type: String, default: "Pending"},
+        specialInstructions : {type: String, default: null}
     },
     { timestamps: true }
 )
