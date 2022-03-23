@@ -11,3 +11,10 @@ exports.getAllCartItems = async (req, res, next) => {
       res.status(500).json(err)
     }
   }
+
+  exports.addToCart = async (req, res, next) => {
+        res.send("Successfull")
+
+  }
+
+  
