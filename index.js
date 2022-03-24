@@ -36,6 +36,6 @@ mongoose
   )
   .then((result) => {
     console.log('Connectted to mongoDB')
-    app.listen(process.env.PORT || 5000)
+    app.listen(5000)
   })
   .catch((err) => console.log(err))
