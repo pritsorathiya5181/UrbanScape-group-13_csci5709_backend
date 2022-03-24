@@ -31,7 +31,10 @@ app.get('*', function (req, res) {
 })
 
 mongoose
-  .connect(process.env.MONGO_URL)
+  .connect(
+    process.env.MONGO_URL ||
+      'mongodb+srv://admin:admin@group13.jsfp6.mongodb.net/OrderManagement?retryWrites=true&w=majority'
+  )
   .then((result) => {
     console.log('Connectted to mongoDB')
     app.listen(process.env.PORT || 5000)
