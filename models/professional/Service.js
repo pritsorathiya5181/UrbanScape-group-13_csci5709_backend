@@ -7,6 +7,7 @@ const ServiceSchema = new Schema(
     // serviceId: { type: Schema.Types.ObjectId, required: true },
     serviceId: { type: String, required: true },
     serviceCategory: { type: String, required: true },
+    serviceName: { type: String, required: true },
     serviceCost: { type: String, required: true },
     serviceImage: [{ photoId: Number, isPhoto: Boolean, photoUrl: String }],
     serviceLocation: { type: String, required: true },
