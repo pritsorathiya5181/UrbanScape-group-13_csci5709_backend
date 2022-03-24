@@ -88,8 +88,8 @@ exports.approveServiceRequest = async (req, res, next) => {
         var transporter = nodemailer.createTransport({
           service: 'gmail',
           auth: {
-            user: process.env.email,
-            pass: process.env.pass,
+            user: process.env.email || 'fresky.france@gmail.com',
+            pass: process.env.pass || 'mynameisprit@5181',
           },
         })
 
