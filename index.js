@@ -25,17 +25,27 @@ app.use('/api/cart', cartRoute)
 
 app.use('/api/service', serviceRoute)
 
+app.get('/', (req, res, next) => {
+  console.log('index route ')
+  res.status(200).json({
+      status: 'success'
+  });
+
+});
+
 app.get('*', function (req, res) {
   console.log('404ing')
   res.send('404')
 })
+
+
 
 mongoose
   .connect(
     'mongodb+srv://admin:admin@group13.jsfp6.mongodb.net/OrderManagement?retryWrites=true&w=majority'
   )
   .then((result) => {
-    console.log('Connectted to mongoDB')
+    console.log('Connected to mongoDB successfully')
     app.listen(process.env.PORT || 5000)
   })
   .catch((err) => console.log(err))
