@@ -12,7 +12,7 @@ exports.getAllCartItems = async (req, res, next) => {
         const successResponse = {
           message: 'Service fetched successfully',
           success: true,
-          cartItems: cartItems,
+          cart: cartItems,
         }
         res.status(200).json(successResponse)
       } else {

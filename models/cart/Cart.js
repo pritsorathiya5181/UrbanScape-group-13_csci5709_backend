@@ -24,7 +24,7 @@ const CartSchema = new mongoose.Schema(
     cartTotalAmount: { type: Number},
     totalCartItems : { type: Number},
     cartDiscountAmount: { type: Number, default: 0 },
-    cartTaxAmount: { type: String ,  default: 0 },
+    cartTaxAmount: { type: Number ,  default: 0 },
     cartItems: { type: [CartItemSchema]}
   },
   { timestamps: true }
