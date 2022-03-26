@@ -2,15 +2,36 @@ const Cart = require('../models/cart/Cart')
 
 
 exports.getAllCartItems = async (req, res, next) => {
-    const query = req.query.new
+
     try {
-      const cartItems = query
-        ? await Cart.find().sort({ _id: -1 }).limit(5)
-        : await Cart.find()
-      res.status(200).json(cartItems)
-    } catch (err) {
-      res.status(500).json(err)
+
+      const cartItems = await Cart.findOne({ userName: req.params.user })
+        console.log(req.params.user)
+        console.log("cart " , cartItems)
+      if (cartItems) {
+        const successResponse = {
+          message: 'Service fetched successfully',
+          success: true,
+          cartItems: cartItems,
+        }
+        res.status(200).json(successResponse)
+      } else {
+        const errorResponse = {
+          message: 'No Service found',
+          success: false,
+        }
+        res.status(404).json(errorResponse)
+      }
+
     }
+    catch (error) {
+      const errorResponse = {
+        message: error,
+        success: false,
+      }
+      res.status(500).json(errorResponse)
+    }
+
   }
 
   exports.addToCart = async (req, res, next) => {
