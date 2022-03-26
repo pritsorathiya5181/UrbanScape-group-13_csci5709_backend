@@ -26,7 +26,7 @@ app.use('/api/cart', cartRoute)
 app.use('/api/service', serviceRoute)
 
 app.get('/', (req, res, next) => {
-  console.log('root')
+  console.log('index route ')
   res.status(200).json({
       status: 'success'
   });
@@ -45,7 +45,7 @@ mongoose
     'mongodb+srv://admin:admin@group13.jsfp6.mongodb.net/OrderManagement?retryWrites=true&w=majority'
   )
   .then((result) => {
-    console.log('Connected to mongoDB')
+    console.log('Connected to mongoDB successfully')
     app.listen(process.env.PORT || 5000)
   })
   .catch((err) => console.log(err))
