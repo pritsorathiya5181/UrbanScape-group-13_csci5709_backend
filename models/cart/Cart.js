@@ -22,6 +22,7 @@ const CartSchema = new mongoose.Schema(
     userName: { type: String, required: true },
     // cartTotalAmount: { type: {type: Number} },
     cartTotalAmount: { type: Number},
+    totalCartItems : { type: Number},
     cartDiscountAmount: { type: Number, default: 0 },
     cartTaxAmount: { type: String ,  default: 0 },
     cartItems: { type: [CartItemSchema]}
