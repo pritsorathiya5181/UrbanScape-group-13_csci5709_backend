@@ -18,9 +18,10 @@ const CartItemSchema = new mongoose.Schema(
 
 const CartSchema = new mongoose.Schema(
   {
-    cartId: { type: Number, required: true, unique: true },
+    cartId: { type: Number, unique: true },
     userName: { type: String, required: true },
-    cartTotalAmount: { type: Number, required: true },
+    // cartTotalAmount: { type: {type: Number} },
+    cartTotalAmount: { type: Number},
     cartDiscountAmount: { type: Number, default: 0 },
     cartTaxAmount: { type: String ,  default: 0 },
     cartItems: { type: [CartItemSchema]}

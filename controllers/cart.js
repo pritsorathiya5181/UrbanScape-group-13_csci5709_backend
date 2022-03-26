@@ -1,5 +1,6 @@
 const Cart = require('../models/cart/Cart')
 
+
 exports.getAllCartItems = async (req, res, next) => {
     const query = req.query.new
     try {
@@ -13,7 +14,71 @@ exports.getAllCartItems = async (req, res, next) => {
   }
 
   exports.addToCart = async (req, res, next) => {
-        res.send("Successfull")
+     
+    const userName = {userName : req.params.user}
+
+    Cart.findOneAndUpdate(userName, { 
+       $set:{cartDiscountAmount: 75},
+      // $set: {
+      //   cartTotalAmount: {
+      //     $reduce: {
+      //       input: "$cartItems",
+      //       initialValue: 0,
+      //       in: {
+      //         $add: [
+      //           `$$value`,
+      //           "$$this.servicePrice"
+      //         ]
+      //       }
+      //     }
+      //   }
+      // },
+      $push: {cartItems : [{
+      itemNo : req.body.itemNo,
+      serviceCategory : req.body.serviceCategory,
+      serviceName : req.body.serviceName,
+      date : req.body.date,
+      clientAddress :req.body.clientAddress,
+      clientName : req.body.clientName,
+      clientContact :req.body.clientContact,
+      clientEmail : req.body.clientEmail,
+      servicePrice : req.body.servicePrice,
+      specialInstructions : req.body.specialInstructions
+    }]}
+  }, {safe: true, upsert: false}, function (err) {
+      if(err){
+        console.log(err)
+      }
+      else{
+        res.send("New Success")
+       
+      }
+    })
+    
+    
+      // res.send("Successfull")
+
+        // const newCartItem = new Cart({
+        //   userName: req.body.userName,
+        //   cartItem: req.body.cartItem
+        // })
+     
+        
+
+        // try {
+        //   const savedItem = await newCartItem.save()
+        //   const successResponse = {
+        //     message: 'Service added successfully',
+        //     success: true,
+        //   }
+        //   res.status(201).json(successResponse)
+        // } catch (err) {
+        //   const errorResponse = {
+        //     message: err,
+        //     success: false,
+        //   }
+        //   res.status(500).json(errorResponse)
+        // }
 
   }
 
