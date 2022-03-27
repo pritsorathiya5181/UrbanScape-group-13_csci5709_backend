@@ -1,4 +1,4 @@
-const User = require('../models/User')
+const User = require('../models/user/User')
 
 exports.updateUser = async (req, res, next) => {
   if (req.body.password) {
