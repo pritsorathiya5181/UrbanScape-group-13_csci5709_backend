@@ -39,21 +39,9 @@ exports.getAllCartItems = async (req, res, next) => {
     const userName = {userName : req.params.user}
 
     Cart.findOneAndUpdate(userName, { 
-       $set:{cartDiscountAmount: 75},
-      // $set: {
-      //   cartTotalAmount: {
-      //     $reduce: {
-      //       input: "$cartItems",
-      //       initialValue: 0,
-      //       in: {
-      //         $add: [
-      //           `$$value`,
-      //           "$$this.servicePrice"
-      //         ]
-      //       }
-      //     }
-      //   }
-      // },
+      $inc: {
+        cartTotalAmount : req.body.servicePrice
+      },
       $push: {cartItems : [{
       itemNo : req.body.itemNo,
       serviceCategory : req.body.serviceCategory,
@@ -71,36 +59,28 @@ exports.getAllCartItems = async (req, res, next) => {
         console.log(err)
       }
       else{
-        res.send("New Success")
+        res.status(200).json('Item has been added...')
        
       }
     })
-    
-    
-      // res.send("Successfull")
-
-        // const newCartItem = new Cart({
-        //   userName: req.body.userName,
-        //   cartItem: req.body.cartItem
-        // })
-     
-        
-
-        // try {
-        //   const savedItem = await newCartItem.save()
-        //   const successResponse = {
-        //     message: 'Service added successfully',
-        //     success: true,
-        //   }
-        //   res.status(201).json(successResponse)
-        // } catch (err) {
-        //   const errorResponse = {
-        //     message: err,
-        //     success: false,
-        //   }
-        //   res.status(500).json(errorResponse)
-        // }
 
   }
+  
+exports.deleteCartItem = async (req, res, next) => {
+      
+    console.log( " param " , req.params.user, req.params.itemId )
+
+    const updatedCart = await Cart.updateOne(
+
+      {userName: req.params.user},
+
+      { $pull: { "cartItems": {itemNo : req.params.itemId } } },
+   
+
+    );
+
+    res.send( updatedCart );
+
+}
 
   
