@@ -49,3 +49,5 @@ mongoose
     app.listen(5000)
   })
   .catch((err) => console.log(err))
+
+  module.exports = app;
