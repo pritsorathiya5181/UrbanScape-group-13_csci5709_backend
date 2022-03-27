@@ -1,11 +1,18 @@
 const mongoose = require('mongoose')
 
-const ServiceSchema = new mongoose.Schema(
+const Schema = mongoose.Schema
+
+const ServiceSchema = new Schema(
   {
-    username: { type: String, required: true, unique: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    isAdmin: { type: Boolean, default: false },
+    // serviceId: { type: Schema.Types.ObjectId, required: true },
+    serviceId: { type: String, required: true },
+    serviceCategory: { type: String, required: true },
+    serviceName: { type: String, required: true },
+    serviceCost: { type: String, required: true },
+    serviceImage: [{ photoId: Number, isPhoto: Boolean, photoUrl: String }],
+    serviceLocation: { type: String, required: true },
+    serviceDescription: { type: String, required: true },
+    userId: { type: String, required: true },
   },
   { timestamps: true }
 )
