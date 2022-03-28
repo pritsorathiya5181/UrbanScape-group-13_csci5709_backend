@@ -7,7 +7,7 @@ exports.getAllCartItems = async (req, res, next) => {
 
       const cartItems = await Cart.findOne({ userName: req.params.user })
         console.log(req.params.user)
-        console.log("cart " , cartItems)
+        console.log("cart " , cartItems.length)
       if (cartItems) {
         const successResponse = {
           message: 'Service fetched successfully',
