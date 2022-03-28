@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 const { schema } = require("../../models/User");
 const Contactus = require('../../models/professional/Contactus')
 
+//logic to handle contactus page entries
 exports.addSupport = async (req, res, next) => {
   var id = mongoose.Types.ObjectId()
 

@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
+//schema for api request body
 const ContactusSchema = new Schema(
   {
     firstname: { type: String, required: true },
