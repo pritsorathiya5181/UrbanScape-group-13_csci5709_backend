@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const CartItemSchema = new mongoose.Schema(
     {
-        itemNo : {type: Number, required: true, unique: true},
+        itemNo : {type: Number},
         serviceCategory : {type: String, required: true},
         serviceName : {type: String, required: true},
         date : {type: String, required: true},
