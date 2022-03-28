@@ -43,13 +43,15 @@ app.get('*', function (req, res) {
   res.send('404')
 })
 
+const PORT = process.env.PORT || 5000
+
 mongoose
   .connect(
     'mongodb+srv://admin:admin@group13.jsfp6.mongodb.net/OrderManagement?retryWrites=true&w=majority'
   )
   .then((result) => {
     console.log('Connected to mongoDB successfully')
-    app.listen(process.env.PORT || 5000)
+    app.listen(PORT)
   })
   .catch((err) => console.log(err))
 
