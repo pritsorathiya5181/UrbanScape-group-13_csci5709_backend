@@ -9,7 +9,7 @@ exports.addService = async (req, res, next) => {
     serviceId: req.body.serviceId,
     serviceCategory: req.body.serviceCategory,
     serviceName: req.body.serviceName,
-    serviceCost: req.body.serviceCost,
+    // serviceCost: req.body.serviceCost,
     serviceImage: req.body.serviceImage,
     serviceLocation: req.body.serviceLocation,
     serviceDescription: req.body.serviceDescription,
