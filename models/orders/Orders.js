@@ -6,6 +6,7 @@ const OrderItemSchema = new mongoose.Schema(
         serviceCategory : {type: String, required: true},
         serviceName : {type: String, required: true},
         date : {type: String, required: true},
+        time : {type: String, required: true},
         clientAddress : {type: String, required: true},
         clientName : {type: String, required: true},
         clientContact : {type: String, required: true},

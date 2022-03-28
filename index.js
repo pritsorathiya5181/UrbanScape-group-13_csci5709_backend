@@ -6,6 +6,7 @@ const userRoute = require('./routes/customer/user')
 const authRoute = require('./routes/customer/auth')
 const orderRoute = require('./routes/customer/order')
 const cartRoute = require('./routes/customer/cart')
+const servicesRoute = require('./routes/services')
 const serviceRoute = require('./routes/professional/service')
 
 const app = express()
@@ -22,8 +23,17 @@ app.use('/api/user', userRoute)
 app.use('/api/auth', authRoute)
 app.use('/api/order', orderRoute)
 app.use('/api/cart', cartRoute)
+app.use('/api/services', servicesRoute)
 
 app.use('/api/service', serviceRoute)
+
+app.get('/', (req, res, next) => {
+  console.log('index route ')
+  res.status(200).json({
+      status: 'success'
+  });
+
+});
 
 app.get('*', function (req, res) {
   console.log('404ing')
@@ -35,7 +45,9 @@ mongoose
     'mongodb+srv://admin:admin@group13.jsfp6.mongodb.net/OrderManagement?retryWrites=true&w=majority'
   )
   .then((result) => {
-    console.log('Connectted to mongoDB')
+    console.log('Connected to mongoDB successfully')
     app.listen(5000)
   })
   .catch((err) => console.log(err))
+
+  module.exports = app;
