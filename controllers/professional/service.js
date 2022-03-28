@@ -1,7 +1,10 @@
+/*  Author: Prit Ajaykumar Sorathiya - B00890175 */
+
 const mongoose = require('mongoose')
 const Service = require('../../models/professional/Service')
 const { v4: uuidv4 } = require('uuid')
 
+//addservice controller
 exports.addService = async (req, res, next) => {
   var id = mongoose.Types.ObjectId()
 
@@ -32,6 +35,7 @@ exports.addService = async (req, res, next) => {
   }
 }
 
+//get all the services controller
 exports.getAllServices = async (req, res, next) => {
   try {
     const services = await Service.find()
@@ -58,6 +62,7 @@ exports.getAllServices = async (req, res, next) => {
   }
 }
 
+//get all my services controller (for service stats)
 exports.fetchAllMyServices = async (req, res, next) => {
   try {
     const services = await Service.find({ userId: req.params.professionalId })
@@ -80,6 +85,7 @@ exports.fetchAllMyServices = async (req, res, next) => {
   }
 }
 
+//get all my services controller
 exports.getAllMyServices = async (req, res, next) => {
   try {
     const services = await Service.find({ userId: req.params.professionalId })
@@ -106,6 +112,7 @@ exports.getAllMyServices = async (req, res, next) => {
   }
 }
 
+//get a service controller
 exports.getService = async (req, res, next) => {
   try {
     const service = await Service.findOne({ serviceId: req.params.serviceId })
@@ -133,6 +140,7 @@ exports.getService = async (req, res, next) => {
   }
 }
 
+//update a service controller
 exports.updateService = async (req, res, next) => {
   try {
     let params = req.body
@@ -169,6 +177,7 @@ exports.updateService = async (req, res, next) => {
   }
 }
 
+//delete a services controller
 exports.deleteService = async (req, res, next) => {
   try {
     const service = await Service.findOneAndDelete({
@@ -197,12 +206,13 @@ exports.deleteService = async (req, res, next) => {
   }
 }
 
+//get my services stats controller
 exports.getServiceStats = async (req, res, next) => {
   const myServices = req.myservices.map((service) => service.serviceName)
   const orders = req.orders
   console.log(myServices)
 
-  // you have req.params.professionalId here, so need to implement
+  // pending task: you have req.params.professionalId here, so need to implement
   // get professionalName from the professional table and use it in the
   // Pending Order section, becuase we have to check that that professional
   // has cancelled the services or not.
