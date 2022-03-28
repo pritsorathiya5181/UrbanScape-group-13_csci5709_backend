@@ -30,10 +30,9 @@ app.use('/api/service', serviceRoute)
 app.get('/', (req, res, next) => {
   console.log('index route ')
   res.status(200).json({
-      status: 'success'
-  });
-
-});
+    status: 'success',
+  })
+})
 
 app.get('*', function (req, res) {
   console.log('404ing')
@@ -50,4 +49,4 @@ mongoose
   })
   .catch((err) => console.log(err))
 
-  module.exports = app;
+module.exports = app
