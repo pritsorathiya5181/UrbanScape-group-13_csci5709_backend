@@ -96,7 +96,7 @@ exports.approveServiceRequest = async (req, res, next) => {
         var mailOptions = {
           from: process.env.email,
           to: clientEmail,
-          subject: 'Sending Email using Node.js',
+          subject: `Order ${orderId} status has changed`,
           html: `<!DOCTYPE html>
           <html>
           <body>
@@ -156,16 +156,23 @@ exports.approveServiceRequest = async (req, res, next) => {
 }
 
 exports.cancelServiceRequest = async (req, res, next) => {
-  const { orderId, itemNo } = req.params
+  const { orderId } = req.params
+  const { itemNo, professionalName } = req.body
+
   let isChanged = false
   try {
     const order = await Order.findOne({ orderId: orderId })
     if (order) {
       order.orderDetails = order.orderDetails.map((order, index) => {
-        if (order.itemNo.toString() === itemNo) {
+        if (order.itemNo.toString() === itemNo.toString()) {
           {
             isChanged = true
             var orderResponse = JSON.parse(JSON.stringify(order))
+            //  this below logic will be added later
+
+            // orderResponse.professionalName =
+            //   orderResponse.professionalName.concat(' ', professionalName)
+
             orderResponse.orderItemStatus = 'Cancelled'
             return orderResponse
           }
@@ -176,7 +183,7 @@ exports.cancelServiceRequest = async (req, res, next) => {
       if (isChanged) {
         await order.save()
         const successResponse = {
-          message: 'Service Approved',
+          message: 'Service Rejected ',
           success: true,
         }
 

@@ -6,9 +6,9 @@ const orderController = require('../../controllers/order')
 router.get('/', orderController.getAllOrders)
 
 //APPROVE SERVICE REQUEST
-router.post('/approve/:orderId/:itemNo', orderController.approveServiceRequest)
+router.post('/approve/:orderId', orderController.approveServiceRequest)
 
 //CANCEL SERVICE REQUEST
-router.post('/cancel/:orderId/:itemNo', orderController.cancelServiceRequest)
+router.post('/cancel/:orderId', orderController.cancelServiceRequest)
 
 module.exports = router

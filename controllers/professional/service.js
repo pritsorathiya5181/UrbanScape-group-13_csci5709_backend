@@ -9,7 +9,7 @@ exports.addService = async (req, res, next) => {
     serviceId: req.body.serviceId,
     serviceCategory: req.body.serviceCategory,
     serviceName: req.body.serviceName,
-    serviceCost: req.body.serviceCost,
+    // serviceCost: req.body.serviceCost,
     serviceImage: req.body.serviceImage,
     serviceLocation: req.body.serviceLocation,
     serviceDescription: req.body.serviceDescription,
@@ -202,6 +202,11 @@ exports.getServiceStats = async (req, res, next) => {
   const orders = req.orders
   console.log(myServices)
 
+  // you have req.params.professionalId here, so need to implement
+  // get professionalName from the professional table and use it in the
+  // Pending Order section, becuase we have to check that that professional
+  // has cancelled the services or not.
+
   const serviceStats = {
     pendingRequests: [],
     approvedRequests: [],
@@ -217,7 +222,17 @@ exports.getServiceStats = async (req, res, next) => {
         orderResponse.orderId = order.orderId
 
         if (orderDetail.orderItemStatus === 'Pending') {
+          // const professionalArr = orderDetail.professionalName?.split(' ')
+          // const hasProfessional = professionalArr.filter(
+          //   (name) =>
+          //     name.toLowerCase() === req.params.professionalId.toLowerCase()
+          // )
+          // if (hasProfessional.length > 0) {
+          //   serviceStats.cancelledRequests.push(orderResponse)
+          //   serviceStats.processedRequests.push(orderResponse)
+          // } else {
           serviceStats.pendingRequests.push(orderResponse)
+          // }
         } else if (orderDetail.orderItemStatus === 'Approved') {
           serviceStats.approvedRequests.push(orderResponse)
           serviceStats.processedRequests.push(orderResponse)
