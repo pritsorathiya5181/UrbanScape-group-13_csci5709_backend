@@ -39,26 +39,15 @@ exports.getAllCartItems = async (req, res, next) => {
     const userName = {userName : req.params.user}
 
     Cart.findOneAndUpdate(userName, { 
-       $set:{cartDiscountAmount: 75},
-      // $set: {
-      //   cartTotalAmount: {
-      //     $reduce: {
-      //       input: "$cartItems",
-      //       initialValue: 0,
-      //       in: {
-      //         $add: [
-      //           `$$value`,
-      //           "$$this.servicePrice"
-      //         ]
-      //       }
-      //     }
-      //   }
-      // },
+      $inc: {
+        cartTotalAmount : req.body.servicePrice
+      },
       $push: {cartItems : [{
       itemNo : req.body.itemNo,
       serviceCategory : req.body.serviceCategory,
       serviceName : req.body.serviceName,
       date : req.body.date,
+      time : req.body.time,
       clientAddress :req.body.clientAddress,
       clientName : req.body.clientName,
       clientContact :req.body.clientContact,
@@ -71,36 +60,55 @@ exports.getAllCartItems = async (req, res, next) => {
         console.log(err)
       }
       else{
-        res.send("New Success")
+        res.status(200).json('Item has been added...')
        
       }
     })
-    
-    
-      // res.send("Successfull")
-
-        // const newCartItem = new Cart({
-        //   userName: req.body.userName,
-        //   cartItem: req.body.cartItem
-        // })
-     
-        
-
-        // try {
-        //   const savedItem = await newCartItem.save()
-        //   const successResponse = {
-        //     message: 'Service added successfully',
-        //     success: true,
-        //   }
-        //   res.status(201).json(successResponse)
-        // } catch (err) {
-        //   const errorResponse = {
-        //     message: err,
-        //     success: false,
-        //   }
-        //   res.status(500).json(errorResponse)
-        // }
 
   }
+  
+exports.deleteCartItem = async (req, res, next) => {
+    console.log(req.body)
+
+    try {
+    const price = req.body.servicePrice
+    const itemId = req.body.itemId
+
+    console.log( " param " , req.params.user, itemId, price )
+
+    const updatedCart = await Cart.updateOne(
+
+      {userName: req.params.user},
+
+      { $pull: { "cartItems": {itemNo: itemId } },
+        $inc: { cartTotalAmount : -price} },
+        {  }
+      
+    )
+    // console.log("Upd Cart" , updatedCart)
+      if(updatedCart){
+        const successResponse = {
+          message: 'cartItem deleted successfully',
+          success: true,
+        }
+        res.status(200).json(successResponse)
+      }
+      else {
+        const errorResponse = {
+          message: 'No cartItem found',
+          success: false,
+        }
+        res.status(404).json(errorResponse)
+    }
+  }
+    catch(error){
+      const errorResponse = {
+        message: error,
+        success: false,
+      }
+      res.status(500).json(errorResponse)
+    }
+
+}
 
   
