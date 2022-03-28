@@ -47,6 +47,7 @@ exports.getAllCartItems = async (req, res, next) => {
       serviceCategory : req.body.serviceCategory,
       serviceName : req.body.serviceName,
       date : req.body.date,
+      time : req.body.time,
       clientAddress :req.body.clientAddress,
       clientName : req.body.clientName,
       clientContact :req.body.clientContact,
