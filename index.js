@@ -6,6 +6,7 @@ const userRoute = require('./routes/customer/user')
 const authRoute = require('./routes/customer/auth')
 const orderRoute = require('./routes/customer/order')
 const cartRoute = require('./routes/customer/cart')
+const newsletterSubscriptionRoute = require('./routes/customer/newsletterSubscription')
 const servicesRoute = require('./routes/services')
 const serviceRoute = require('./routes/professional/service')
 
@@ -18,22 +19,22 @@ app.use(cors())
 app.use(express.json({ limit: '50mb' }))
 app.use(express.urlencoded({ limit: '50mb', extended: true }))
 
-//THiS IS ONLY SAMPLE
+// API routes
 app.use('/api/user', userRoute)
 app.use('/api/auth', authRoute)
 app.use('/api/order', orderRoute)
 app.use('/api/cart', cartRoute)
 app.use('/api/services', servicesRoute)
+app.use('/api/subscribe', newsletterSubscriptionRoute)
 
 app.use('/api/service', serviceRoute)
 
 app.get('/', (req, res, next) => {
   console.log('index route ')
   res.status(200).json({
-      status: 'success'
-  });
-
-});
+    status: 'success',
+  })
+})
 
 app.get('*', function (req, res) {
   console.log('404ing')
@@ -50,4 +51,4 @@ mongoose
   })
   .catch((err) => console.log(err))
 
-  module.exports = app;
+module.exports = app
