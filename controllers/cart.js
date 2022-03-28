@@ -67,19 +67,46 @@ exports.getAllCartItems = async (req, res, next) => {
   }
   
 exports.deleteCartItem = async (req, res, next) => {
-      
-    console.log( " param " , req.params.user, req.params.itemId )
+    console.log(req.body)
+
+    try {
+    const price = req.body.servicePrice
+    const itemId = req.body.itemId
+
+    console.log( " param " , req.params.user, itemId, price )
 
     const updatedCart = await Cart.updateOne(
 
       {userName: req.params.user},
 
-      { $pull: { "cartItems": {itemNo : req.params.itemId } } },
-   
-
-    );
-
-    res.send( updatedCart );
+      { $pull: { "cartItems": {itemNo: itemId } },
+        $inc: { cartTotalAmount : -price} },
+        {  }
+      
+    )
+    // console.log("Upd Cart" , updatedCart)
+      if(updatedCart){
+        const successResponse = {
+          message: 'cartItem deleted successfully',
+          success: true,
+        }
+        res.status(200).json(successResponse)
+      }
+      else {
+        const errorResponse = {
+          message: 'No cartItem found',
+          success: false,
+        }
+        res.status(404).json(errorResponse)
+    }
+  }
+    catch(error){
+      const errorResponse = {
+        message: error,
+        success: false,
+      }
+      res.status(500).json(errorResponse)
+    }
 
 }
 
