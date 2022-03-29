@@ -1,10 +1,10 @@
 //Author: Rikin Pineshkumar Patel
 
-const express = require("express");
-const app = express();
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-const { schema } = require("../../models/User");
+const express = require('express')
+const app = express()
+const mongoose = require('mongoose')
+const bodyParser = require('body-parser')
+const { schema } = require('../../models/user/User')
 const Contactus = require('../../models/professional/Contactus')
 
 //logic to handle contactus page entries
