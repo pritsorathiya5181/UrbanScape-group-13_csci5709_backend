@@ -1,6 +1,6 @@
 const User = require('../models/user/User')
 const Professional = require('../models/professional/Professional')
-const CryptoJS = require('crypto-js')
+const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 var nodemailer = require('nodemailer')
@@ -25,10 +25,7 @@ exports.signupUser = async (req, res, next) => {
     lastname: req.body.lastname,
     email: req.body.email,
     phoneno: req.body.phoneno,
-    password: CryptoJS.AES.encrypt(
-      req.body.password,
-      process.env.PASS_SEC
-    ).toString(),
+    password:bcrypt.hashSync(req.body.password,10)
   })
   console.log(newuser)
 
@@ -58,10 +55,7 @@ exports.professionalsignup = async (req, res, next) => {
     lastname: req.body.lastname,
     email: req.body.email,
     phoneno: req.body.phoneno,
-    password: CryptoJS.AES.encrypt(
-      req.body.password,
-      process.env.PASS_SEC
-    ).toString(),
+    password: bcrypt.hashSync(req.body.password,10),
     experience: req.body.experience,
     workinghours: req.body.workinghours,
     preferredservice: req.body.preferredservice,
@@ -87,44 +81,6 @@ exports.professionalsignup = async (req, res, next) => {
 }
 
 //user login
-// exports.userlogin = (req,res,next)=>{
-//     try {
-//         res.setHeader('Access-Control-Allow-Origin', '*');
-//         if(!req.params.email || !req.params.password){
-//           return res.status(400).json({message:"Invalid parameters"});
-//         }
-//         var email = req.params.email;
-//         var password = req.params.password;
-//         User.findOne({})
-//         .where('email')
-//         .equals(email)
-//         .where('password')
-//         .equals(password)
-//         .exec(function(err,data){
-//           if(data)  {
-//             res.send(200,data);
-//           }
-//           else{
-//             Professional.findOne({})
-//         .where('email')
-//         .equals(email)
-//         .where('password')
-//         .equals(password)
-//         .exec(function(err,data){
-//           if(data)  {
-//             res.send(200,data);
-//           }
-//           else{
-//             res.send(404,"data not found");
-//             }
-//         })
-//             }
-//         })
-//       } catch (error) {
-//         res.status(500).json({ message: "Internal server error" });
-//       }
-// }
-
 exports.userlogin = async (req, res, next) => {
   try {
     if (!req.params.email || !req.params.password) {
@@ -140,12 +96,8 @@ exports.userlogin = async (req, res, next) => {
       if (!professionaluser) {
         return res.status(401).json('User not registered')
       }
-      const hashedPassword = CryptoJS.AES.decrypt(
-        professionaluser.password,
-        process.env.PASS_SEC
-      )
-      const password = hashedPassword.toString(CryptoJS.enc.Utf8)
-      if (password !== req.params.password) {
+      const hashedPassword = bcrypt.hashSync(req.body.password,10)
+      if (hashedPassword !== professionaluser.password) {
         console.log('in password')
         return res.status(401).json('Wrong password')
       }
@@ -171,12 +123,8 @@ exports.userlogin = async (req, res, next) => {
     }
     console.log(user.password)
     console.log(email)
-    const hashedPassword = CryptoJS.AES.decrypt(
-      user.password,
-      process.env.PASS_SEC
-    )
-    const password = hashedPassword.toString(CryptoJS.enc.Utf8)
-    if (password !== req.params.password) {
+    const pwd = bcrypt.hashSync(req.body.password,10)
+    if (pwd !== user.password) {
       console.log('in password')
       return res.status(401).json('Wrong password')
     }
@@ -235,8 +183,6 @@ exports.forgetpassword = (req, res, next) => {
       res.send({ message: 'Invalid parameters' })
     }
     var email = req.params.email
-    // console.log("FIND ALL");
-    // console.log( User.find().pretty());
     User.findOne({})
       .where('email')
       .equals(email)
@@ -332,13 +278,10 @@ exports.verifyotp = (req, res, next) => {
 }
 
 exports.updatepassword = (req, res, next) => {
-  var hashpassword = CryptoJS.AES.encrypt(
-    req.params.password,
-    process.env.PASS_SEC
-  ).toString()
+  var hashedPassword = bcrypt.hashSync(req.params.password,10)
   User.findOneAndUpdate(
     { email: req.params.username },
-    { $set: { password: hashpassword } },
+    { $set: { password: hashedPassword } },
     { new: false },
     (err, doc) => {
       if (doc) {
@@ -346,7 +289,7 @@ exports.updatepassword = (req, res, next) => {
       } else {
         Professional.findOneAndUpdate(
           { email: req.params.username },
-          { $set: { password: hashpassword } },
+          { $set: { password: hashedPassword } },
           { new: false },
           (err, doc) => {
             if (doc) {
