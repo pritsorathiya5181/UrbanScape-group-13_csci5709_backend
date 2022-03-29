@@ -10,6 +10,6 @@ router.get('/users/:email/:password', authcontroller.userlogin)
 router.get('/professionals/:email/:password', authcontroller.professionallogin)
 router.get('/forgetpassword/:email', authcontroller.forgetpassword)
 router.post('/deleteuser', authcontroller.deleteuser)
-router.get('/verifyotp/:otp', authcontroller.verifyotp)
+router.get('/verifyotp/:otp/:user', authcontroller.verifyotp)
 router.get('/updatepassword/:username/:password', authcontroller.updatepassword)
 module.exports = router

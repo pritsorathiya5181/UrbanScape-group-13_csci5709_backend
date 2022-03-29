@@ -12,9 +12,9 @@ var transporter = nodemailer.createTransport({
   },
 })
 
-var currentotp
-function otp(r) {
-  currentotp = r
+var currentotp = {}
+function otp(email, otp) {
+  currentotp[email] = otp
   console.log(currentotp)
 }
 
@@ -132,6 +132,8 @@ exports.userlogin = async (req, res, next) => {
     }
 
     var email = req.params.email
+    console.log("FIND ALL");
+    console.log(await User.find({}).pretty());
     const user = await User.findOne({ email: email })
     if (!user) {
       const professionaluser = await Professional.findOne({ email: email })
@@ -233,13 +235,15 @@ exports.forgetpassword = (req, res, next) => {
       res.send({ message: 'Invalid parameters' })
     }
     var email = req.params.email
+    // console.log("FIND ALL");
+    // console.log( User.find().pretty());
     User.findOne({})
       .where('email')
       .equals(email)
       .exec(function (err, data) {
         if (data) {
           let r = (Math.random() + 1).toString(36).substring(7)
-          otp(r)
+          otp(email, r)
           var mailOptions = {
             from: 'aditi2007sonawane@gmail.com',
             to: email,
@@ -263,7 +267,7 @@ exports.forgetpassword = (req, res, next) => {
             .exec(function (err, data) {
               if (data) {
                 let r = (Math.random() + 1).toString(36).substring(7)
-                otp(r)
+                otp(email, r)
                 var mailOptions = {
                   from: 'aditi2007sonawane@gmail.com',
                   to: email,
@@ -317,7 +321,8 @@ exports.deleteuser = (req, res, next) => {
 
 exports.verifyotp = (req, res, next) => {
   var otp = req.params.otp
-  if (currentotp == otp) {
+  var email = req.params.user;
+  if (currentotp[email] == otp) {
     console.log('otp matched')
     res.send('otp matched')
   } else {
