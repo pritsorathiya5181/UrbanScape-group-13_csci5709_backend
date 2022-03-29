@@ -14,7 +14,12 @@ var transporter = nodemailer.createTransport({
 
 var currentotp = {}
 function otp(email, otp) {
-  currentotp[email] = otp
+  let otpData = {
+    'code':otp,
+    'created':new Date()
+  }
+  currentotp[email] = otpData
+  console.log(currentotp);
 }
 
 //user signup
@@ -260,12 +265,21 @@ exports.deleteuser = (req, res, next) => {
     })
 }
 
+const OTP_TIMEOUT = 5;
 exports.verifyotp = (req, res, next) => {
   var otp = req.params.otp
   var email = req.params.user;
-  if (currentotp[email] == otp) {
-    console.log('otp matched')
-    res.send('otp matched')
+  if (currentotp[email] && currentotp[email].code == otp) {
+    var diff = Math.abs(new Date() - currentotp[email].created);
+    var minutes = Math.floor((diff/1000)/60);
+    console.log(minutes+" since OTP was issued");
+    if(minutes > OTP_TIMEOUT) {
+      console.log('please enter valid otp')
+      res.send('OTP expired')
+    } else {
+      console.log('otp matched')
+      res.send('otp matched')
+    }
   } else {
     res.send('Invalid otp')
     console.log('please enter valid otp')
