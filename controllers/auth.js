@@ -15,7 +15,6 @@ var transporter = nodemailer.createTransport({
 var currentotp = {}
 function otp(email, otp) {
   currentotp[email] = otp
-  console.log(currentotp)
 }
 
 //user signup
@@ -80,7 +79,7 @@ exports.professionalsignup = async (req, res, next) => {
   }
 }
 
-//user login
+
 exports.userlogin = async (req, res, next) => {
   try {
     if (!req.params.email || !req.params.password) {
@@ -88,8 +87,6 @@ exports.userlogin = async (req, res, next) => {
     }
 
     var email = req.params.email
-    console.log("FIND ALL");
-    console.log(await User.find({}).pretty());
     const user = await User.findOne({ email: email })
     if (!user) {
       const professionaluser = await Professional.findOne({ email: email })
@@ -101,7 +98,6 @@ exports.userlogin = async (req, res, next) => {
         console.log('in password')
         return res.status(401).json('Wrong password')
       }
-      console.log(professionaluser._id)
       const accessToken = jwt.sign(
         {
           id: professionaluser._id,
@@ -175,6 +171,7 @@ exports.professionallogin = (req, res, next) => {
   }
 }
 
+const fromMail = 'aditi2007sonawane@gmail.com'
 //forgetpassword
 exports.forgetpassword = (req, res, next) => {
   try {
@@ -191,7 +188,7 @@ exports.forgetpassword = (req, res, next) => {
           let r = (Math.random() + 1).toString(36).substring(7)
           otp(email, r)
           var mailOptions = {
-            from: 'aditi2007sonawane@gmail.com',
+            from: fromMail,
             to: email,
             subject: 'OTP to change password is:',
             text: r,
@@ -215,7 +212,7 @@ exports.forgetpassword = (req, res, next) => {
                 let r = (Math.random() + 1).toString(36).substring(7)
                 otp(email, r)
                 var mailOptions = {
-                  from: 'aditi2007sonawane@gmail.com',
+                  from: fromMail,
                   to: email,
                   subject: 'OTP to change password is:',
                   text: r,
