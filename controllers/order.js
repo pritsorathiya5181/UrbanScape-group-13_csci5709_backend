@@ -1,6 +1,9 @@
+/*  Author: Prit Ajaykumar Sorathiya - B00890175 - approve service, cancel service  */
+
 const Order = require('../models/orders/Orders')
 const nodemailer = require('nodemailer')
 
+// fetch all orders for handling service requests
 exports.fetchOrders = async (req, res, next) => {
   try {
     const orders = await Order.find()
@@ -54,6 +57,7 @@ exports.getAllOrders = async (req, res, next) => {
   }
 }
 
+// approve service request
 exports.approveServiceRequest = async (req, res, next) => {
   const { orderId } = req.params
   const {
@@ -155,6 +159,7 @@ exports.approveServiceRequest = async (req, res, next) => {
   }
 }
 
+// cancel service request
 exports.cancelServiceRequest = async (req, res, next) => {
   const { orderId } = req.params
   const { itemNo, professionalName } = req.body
