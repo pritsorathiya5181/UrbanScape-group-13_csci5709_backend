@@ -47,8 +47,8 @@ const PORT = process.env.PORT || 5000
 
 mongoose
   .connect(
-    'mongodb+srv://admin:admin@group13.jsfp6.mongodb.net/OrderManagement?retryWrites=true&w=majority'
-  )
+     'mongodb+srv://admin:admin@group13.jsfp6.mongodb.net/OrderManagement?retryWrites=true&w=majority'
+    )
   .then((result) => {
     console.log('Connected to mongoDB successfully!')
     app.listen(PORT)
