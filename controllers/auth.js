@@ -93,9 +93,9 @@ exports.userlogin = async (req, res, next) => {
       if (!professionaluser) {
         return res.status(401).json('User not registered')
       }
-      const hashedPassword = bcrypt.hashSync(req.body.password,10)
-      if (hashedPassword !== professionaluser.password) {
-        console.log('in password')
+
+      if (!bcrypt.compareSync(req.params.password, professionaluser.password)) {
+        console.log('wrong pro password')
         return res.status(401).json('Wrong password')
       }
       const accessToken = jwt.sign(
@@ -117,11 +117,9 @@ exports.userlogin = async (req, res, next) => {
         return res.status(401).json('Error')
       }
     }
-    console.log(user.password)
-    console.log(email)
-    const pwd = bcrypt.hashSync(req.body.password,10)
-    if (pwd !== user.password) {
-      console.log('in password')
+
+    if (!bcrypt.compareSync(req.params.password, user.password)) {
+      console.log('wrong user password')
       return res.status(401).json('Wrong password')
     }
     console.log(user._id)
