@@ -9,6 +9,7 @@ const cartRoute = require('./routes/customer/cart')
 const newsletterSubscriptionRoute = require('./routes/customer/newsletterSubscription')
 const servicesRoute = require('./routes/services')
 const serviceRoute = require('./routes/professional/service')
+const supportRoute = require('./routes/professional/support')
 
 const app = express()
 
@@ -28,28 +29,30 @@ app.use('/api/services', servicesRoute)
 app.use('/api/subscribe', newsletterSubscriptionRoute)
 
 app.use('/api/service', serviceRoute)
+app.use('/api/support', supportRoute)
 
 app.get('/', (req, res, next) => {
   console.log('index route ')
   res.status(200).json({
-      status: 'success'
-  });
-
-});
+    status: 'success',
+  })
+})
 
 app.get('*', function (req, res) {
   console.log('404ing')
   res.send('404')
 })
 
+const PORT = process.env.PORT || 5000
+
 mongoose
   .connect(
-    'mongodb+srv://admin:admin@group13.jsfp6.mongodb.net/OrderManagement?retryWrites=true&w=majority'
-  )
+     'mongodb+srv://admin:admin@group13.jsfp6.mongodb.net/OrderManagement?retryWrites=true&w=majority'
+    )
   .then((result) => {
-    console.log('Connected to mongoDB successfully')
-    app.listen(5000)
+    console.log('Connected to mongoDB successfully!')
+    app.listen(PORT)
   })
   .catch((err) => console.log(err))
 
-  module.exports = app;
+module.exports = app
