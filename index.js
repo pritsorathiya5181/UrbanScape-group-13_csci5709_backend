@@ -50,7 +50,7 @@ mongoose
     'mongodb+srv://admin:admin@group13.jsfp6.mongodb.net/OrderManagement?retryWrites=true&w=majority'
   )
   .then((result) => {
-    console.log('Connected to mongoDB successfully !')
+    console.log('Connected to mongoDB successfully!')
     app.listen(PORT)
   })
   .catch((err) => console.log(err))
