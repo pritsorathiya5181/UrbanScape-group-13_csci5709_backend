@@ -1,3 +1,5 @@
+/*  Author: Prit Ajaykumar Sorathiya - B00890175 */
+
 const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
