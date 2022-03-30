@@ -87,7 +87,9 @@ exports.professionalsignup = async (req, res, next) => {
 exports.userlogin = async (req, res, next) => {
   try {
     if (!req.params.email || !req.params.password) {
-      return res.status(400).json({ message: 'Invalid parameters' })
+      return res
+        .status(400)
+        .json({ message: 'Invalid parameters', success: false })
     }
 
     var email = req.params.email
@@ -95,12 +97,16 @@ exports.userlogin = async (req, res, next) => {
     if (!user) {
       const professionaluser = await Professional.findOne({ email: email })
       if (!professionaluser) {
-        return res.status(401).json('User not registered')
+        return res
+          .status(401)
+          .json({ message: 'User not registered', success: false })
       }
 
       if (!bcrypt.compareSync(req.params.password, professionaluser.password)) {
         console.log('wrong pro password')
-        return res.status(401).json('Wrong password')
+        return res
+          .status(401)
+          .json({ message: 'Wrong password', success: false })
       }
       const accessToken = jwt.sign(
         {
@@ -116,13 +122,13 @@ exports.userlogin = async (req, res, next) => {
           user: professionaluser,
         })
       } else {
-        return res.status(401).json('Error')
+        return res.status(401).json({ message: 'Error', success: false })
       }
     }
 
     if (!bcrypt.compareSync(req.params.password, user.password)) {
       console.log('wrong user password')
-      return res.status(401).json('Wrong password')
+      return res.status(401).json({ message: 'Wrong password', success: false })
     }
     console.log(user._id)
     const accessToken = jwt.sign(
@@ -133,15 +139,20 @@ exports.userlogin = async (req, res, next) => {
       { expiresIn: '1d' }
     )
     if (user) {
-      return res
-        .status(200)
-        .json({ message: 'Welcome user', accessToken, user: user })
+      return res.status(200).json({
+        message: 'Welcome user',
+        success: true,
+        accessToken,
+        user: user,
+      })
     } else {
-      return res.status(401).json('Error')
+      return res.status(401).json({ message: 'Error', success: false })
     }
   } catch (error) {
     console.log(error)
-    return res.status(500).json({ message: 'Internal server error' })
+    return res
+      .status(500)
+      .json({ message: 'Internal server error', success: false })
   }
 }
 
