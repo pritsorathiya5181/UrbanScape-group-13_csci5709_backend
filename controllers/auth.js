@@ -120,6 +120,7 @@ exports.userlogin = async (req, res, next) => {
           message: 'Welcome Professional',
           accessToken,
           user: professionaluser,
+          success: true,
         })
       } else {
         return res.status(401).json({ message: 'Error', success: false })
