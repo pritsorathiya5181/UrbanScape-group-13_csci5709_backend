@@ -1,28 +1,26 @@
 const express = require('express')
-
 const router = express.Router()
 const userController = require('../../controllers/user')
-const auth = require('../customer/auth')
 
-// router.get('/usertest', (req, res) => {
-//   res.send('User test is successfull!')
-// })
+//UPDATE A CUSTOMER
+router.put('/customer/:email', userController.updateUser)
 
-// router.post('/userposttest', (req, res) => {
-//     const username = req.body.username;
-//     res.send("name is : "+ username);
-// })
+//UPDATE A PROFESSIONAL
+router.put('/professional/:email', userController.updateProfessionalUser)
 
-//UPDATE USER
-router.put('/:id', userController.updateUser)
+//DELETE A CUSTOMER
+router.delete('/customer/:email', userController.deleteCustomerUser)
 
-//DELETE USER
-router.delete('/:id', userController.deleteUser)
+//DELETE A PROFESSIONAL
+router.delete('/professional/:email', userController.deleteProfessionalUser)
 
-//GET USER
-router.get('/find/:id', userController.getUser)
+//GET A CUSTOMER USER
+router.get('/findcustomer/:email', userController.getCustomerUser)
+
+//GET A PROFESSIONAL USER
+router.get('/findprofessional/:email', userController.getProfessionalUser)
 
 //GET ALL USER
-router.get('/', userController.getAllUSers)
+router.get('/findAll', userController.getAllUSers)
 
 module.exports = router

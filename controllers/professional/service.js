@@ -131,7 +131,7 @@ exports.getService = async (req, res, next) => {
       }
       res.status(404).json(errorResponse)
     }
-  } catch (error) {
+  } catch (err) {
     const errorResponse = {
       message: err,
       success: false,
@@ -168,7 +168,7 @@ exports.updateService = async (req, res, next) => {
       }
       res.status(404).json(errorResponse)
     }
-  } catch (error) {
+  } catch (err) {
     const errorResponse = {
       message: err,
       success: false,
@@ -197,7 +197,7 @@ exports.deleteService = async (req, res, next) => {
       }
       res.status(404).json(errorResponse)
     }
-  } catch (error) {
+  } catch (err) {
     const errorResponse = {
       message: err,
       success: false,
