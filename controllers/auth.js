@@ -15,11 +15,11 @@ var transporter = nodemailer.createTransport({
 var currentotp = {}
 function otp(email, otp) {
   let otpData = {
-    'code':otp,
-    'created':new Date()
+    code: otp,
+    created: new Date(),
   }
   currentotp[email] = otpData
-  console.log(currentotp);
+  console.log(currentotp)
 }
 
 //user signup
@@ -29,7 +29,7 @@ exports.signupUser = async (req, res, next) => {
     lastname: req.body.lastname,
     email: req.body.email,
     phoneno: req.body.phoneno,
-    password:bcrypt.hashSync(req.body.password,10)
+    password: bcrypt.hashSync(req.body.password, 10),
   })
   console.log(newuser)
 
@@ -59,7 +59,7 @@ exports.professionalsignup = async (req, res, next) => {
     lastname: req.body.lastname,
     email: req.body.email,
     phoneno: req.body.phoneno,
-    password: bcrypt.hashSync(req.body.password,10),
+    password: bcrypt.hashSync(req.body.password, 10),
     experience: req.body.experience,
     workinghours: req.body.workinghours,
     preferredservice: req.body.preferredservice,
@@ -84,11 +84,12 @@ exports.professionalsignup = async (req, res, next) => {
   }
 }
 
-
 exports.userlogin = async (req, res, next) => {
   try {
     if (!req.params.email || !req.params.password) {
-      return res.status(400).json({ message: 'Invalid parameters' })
+      return res
+        .status(400)
+        .json({ message: 'Invalid parameters', success: false })
     }
 
     var email = req.params.email
@@ -96,12 +97,16 @@ exports.userlogin = async (req, res, next) => {
     if (!user) {
       const professionaluser = await Professional.findOne({ email: email })
       if (!professionaluser) {
-        return res.status(401).json('User not registered')
+        return res
+          .status(401)
+          .json({ message: 'User not registered', success: false })
       }
 
       if (!bcrypt.compareSync(req.params.password, professionaluser.password)) {
         console.log('wrong pro password')
-        return res.status(401).json('Wrong password')
+        return res
+          .status(401)
+          .json({ message: 'Wrong password', success: false })
       }
       const accessToken = jwt.sign(
         {
@@ -111,21 +116,19 @@ exports.userlogin = async (req, res, next) => {
         { expiresIn: '1d' }
       )
       if (professionaluser) {
-        return res
-          .status(200)
-          .json({
-            message: 'Welcome Professional',
-            accessToken,
-            user: professionaluser,
-          })
+        return res.status(200).json({
+          message: 'Welcome Professional',
+          accessToken,
+          user: professionaluser,
+        })
       } else {
-        return res.status(401).json('Error')
+        return res.status(401).json({ message: 'Error', success: false })
       }
     }
 
     if (!bcrypt.compareSync(req.params.password, user.password)) {
       console.log('wrong user password')
-      return res.status(401).json('Wrong password')
+      return res.status(401).json({ message: 'Wrong password', success: false })
     }
     console.log(user._id)
     const accessToken = jwt.sign(
@@ -136,15 +139,20 @@ exports.userlogin = async (req, res, next) => {
       { expiresIn: '1d' }
     )
     if (user) {
-      return res
-        .status(200)
-        .json({ message: 'Welcome user', accessToken, user: user })
+      return res.status(200).json({
+        message: 'Welcome user',
+        success: true,
+        accessToken,
+        user: user,
+      })
     } else {
-      return res.status(401).json('Error')
+      return res.status(401).json({ message: 'Error', success: false })
     }
   } catch (error) {
     console.log(error)
-    return res.status(500).json({ message: 'Internal server error' })
+    return res
+      .status(500)
+      .json({ message: 'Internal server error', success: false })
   }
 }
 
@@ -265,15 +273,15 @@ exports.deleteuser = (req, res, next) => {
     })
 }
 
-const OTP_TIMEOUT = 5;
+const OTP_TIMEOUT = 5
 exports.verifyotp = (req, res, next) => {
   var otp = req.params.otp
-  var email = req.params.user;
+  var email = req.params.user
   if (currentotp[email] && currentotp[email].code == otp) {
-    var diff = Math.abs(new Date() - currentotp[email].created);
-    var minutes = Math.floor((diff/1000)/60);
-    console.log(minutes+" since OTP was issued");
-    if(minutes > OTP_TIMEOUT) {
+    var diff = Math.abs(new Date() - currentotp[email].created)
+    var minutes = Math.floor(diff / 1000 / 60)
+    console.log(minutes + ' since OTP was issued')
+    if (minutes > OTP_TIMEOUT) {
       console.log('please enter valid otp')
       res.send('OTP expired')
     } else {
@@ -287,7 +295,7 @@ exports.verifyotp = (req, res, next) => {
 }
 
 exports.updatepassword = (req, res, next) => {
-  var hashedPassword = bcrypt.hashSync(req.params.password,10)
+  var hashedPassword = bcrypt.hashSync(req.params.password, 10)
   User.findOneAndUpdate(
     { email: req.params.username },
     { $set: { password: hashedPassword } },

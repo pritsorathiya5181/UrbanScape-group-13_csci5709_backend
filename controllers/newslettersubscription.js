@@ -3,6 +3,7 @@ const NewsletterSubscription = require('../models/NewsletterSubscription')
 const { v4: uuidv4 } = require('uuid')
 
 exports.addSubscription = async (req, res, next) => {
+
   try {
     const email = req.body.email;
     const newsletterSubscription = await NewsletterSubscription.find({emailAddress: email })
@@ -24,11 +25,11 @@ exports.addSubscription = async (req, res, next) => {
     const newSubscription = new NewsletterSubscription({
         emailAddress: email
     });
-    newSubscription.save().then((result)=>{
+    const conf = await newSubscription.save().then((result)=>{
         console.log(result);
-        res.send(result);
+        return res.status(200).json({ message: "New email subscription added", success: 'true' });
       })
-   return res.status(200).json({ message: "New email subscription added", success: 'true' });
+   
     
 } catch (err) {
     return res.status(500).json({ success: 'false', message: 'Internal Server Error' });
