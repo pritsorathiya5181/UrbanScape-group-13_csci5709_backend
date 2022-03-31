@@ -40,6 +40,10 @@ exports.updateUser = async (req, res, next) => {
 }
 
 exports.updateProfessionalUser = async (req, res, next) => {
+  if (req.body.password) {
+    req.body.password = bcrypt.hashSync(req.body.password, 10)
+  }
+
   try {
     const updatedUser = await Professional.findOneAndUpdate(
       { email: req.params.email },
