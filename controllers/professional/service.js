@@ -232,17 +232,17 @@ exports.getServiceStats = async (req, res, next) => {
         orderResponse.orderId = order.orderId
 
         if (orderDetail.orderItemStatus === 'Pending') {
-          // const professionalArr = orderDetail.professionalName?.split(' ')
-          // const hasProfessional = professionalArr.filter(
-          //   (name) =>
-          //     name.toLowerCase() === req.params.professionalId.toLowerCase()
-          // )
-          // if (hasProfessional.length > 0) {
-          //   serviceStats.cancelledRequests.push(orderResponse)
-          //   serviceStats.processedRequests.push(orderResponse)
-          // } else {
-          serviceStats.pendingRequests.push(orderResponse)
-          // }
+          const professionalArr = orderDetail.professionalName?.split(' ')
+          const hasProfessional = professionalArr.filter(
+            (name) =>
+              name.toLowerCase() === req.params.professionalEmail.toLowerCase()
+          )
+          if (hasProfessional.length > 0) {
+            serviceStats.cancelledRequests.push(orderResponse)
+            serviceStats.processedRequests.push(orderResponse)
+          } else {
+            serviceStats.pendingRequests.push(orderResponse)
+          }
         } else if (orderDetail.orderItemStatus === 'Approved') {
           serviceStats.approvedRequests.push(orderResponse)
           serviceStats.processedRequests.push(orderResponse)

@@ -162,7 +162,7 @@ exports.approveServiceRequest = async (req, res, next) => {
 // cancel service request
 exports.cancelServiceRequest = async (req, res, next) => {
   const { orderId } = req.params
-  const { itemNo, professionalName } = req.body
+  const { itemNo, professionalEmail } = req.body
 
   let isChanged = false
   try {
@@ -177,8 +177,10 @@ exports.cancelServiceRequest = async (req, res, next) => {
 
             // orderResponse.professionalName =
             //   orderResponse.professionalName.concat(' ', professionalName)
+            orderResponse.professionalName =
+              orderResponse.professionalName.concat(' ', professionalEmail)
 
-            orderResponse.orderItemStatus = 'Cancelled'
+            // orderResponse.orderItemStatus = 'Cancelled'
             return orderResponse
           }
         }
