@@ -1,4 +1,5 @@
 /*  Author: Prit Ajaykumar Sorathiya - B00890175 - approve service, cancel service  */
+/*  Author: Aeshna Verma - B00880776 - submit order  */
 
 const Order = require('../models/orders/Orders')
 const nodemailer = require('nodemailer')
@@ -207,6 +208,34 @@ exports.cancelServiceRequest = async (req, res, next) => {
       }
       res.status(404).json(errorResponse)
     }
+  } catch (err) {
+    const errorResponse = {
+      message: err,
+      success: false,
+    }
+    res.status(500).json(errorResponse)
+  }
+}
+
+
+exports.submitOrder = async (req, res, next) => {
+     
+  const newOrder = new Order({
+    orderId: req.body.orderId,
+    userName: req.params.user,
+    orderAmount :req.body.orderAmount,
+    discountAmount : req.body.discountAmount,
+    taxAmount: req.body.taxAmount,
+    orderDetails:  req.body.orderDetails
+  })
+
+  try {
+    const savedOrder = await newOrder.save()
+    const successResponse = {
+      message: 'Order submitted successfully',
+      success: true,
+    }
+    res.status(201).json(successResponse)
   } catch (err) {
     const errorResponse = {
       message: err,
