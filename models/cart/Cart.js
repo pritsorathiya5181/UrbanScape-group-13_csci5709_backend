@@ -23,7 +23,6 @@ const CartSchema = new mongoose.Schema(
   {
     cartId: { type: Number, unique: true },
     userName: { type: String, required: true },
-    // cartTotalAmount: { type: {type: Number} },
     cartTotalAmount: { type: Number},
     totalCartItems : { type: Number},
     cartDiscountAmount: { type: Number, default: 0 },

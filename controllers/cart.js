@@ -70,13 +70,10 @@ exports.getAllCartItems = async (req, res, next) => {
   }
   
 exports.deleteCartItem = async (req, res, next) => {
-    console.log(req.body)
 
     try {
     const price = req.body.servicePrice
     const itemId = req.body.itemId
-
-    console.log( " param " , req.params.user, itemId, price )
 
     const updatedCart = await Cart.updateOne(
 
@@ -87,7 +84,6 @@ exports.deleteCartItem = async (req, res, next) => {
         {  }
       
     )
-    // console.log("Upd Cart" , updatedCart)
       if(updatedCart){
         const successResponse = {
           message: 'cartItem deleted successfully',
@@ -113,4 +109,45 @@ exports.deleteCartItem = async (req, res, next) => {
 
 }
 
+exports.createCart = async (req, res, next) => {
+
+  const cartExists = await Cart.exists({ userName: req.params.user});
+
+  if(cartExists){
+
+    const carExistsResponse = {
+      message: 'Cart already exists for this user',
+      success: true,
+    }
+    res.status(201).json(carExistsResponse)
+ 
+}
+else{
+  const cartId = Date.now()
+
+  const newCart = new Cart({
+    cartId: cartId,
+    userName: req.params.user,
+    cartTotalAmount: 0,
+    cartTaxAmount : 0,
+    totalCartItems : 0,
+    cartItems : []
+  })
+
+  try {
+    const emptyCart = await newCart.save()
+    const successResponse = {
+      message: 'Cart created successfully',
+      success: true,
+    }
+    res.status(201).json(successResponse)
+  } catch (err) {
+    const errorResponse = {
+      message: err,
+      success: false,
+    }
+    res.status(500).json(errorResponse)
+  }
+}
+}
   
