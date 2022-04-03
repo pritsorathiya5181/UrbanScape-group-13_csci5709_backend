@@ -1,3 +1,5 @@
+//Author : Aeshna Verma (B00880776)
+
 const Cart = require('../models/cart/Cart')
 
 
@@ -7,7 +9,7 @@ exports.getAllCartItems = async (req, res, next) => {
 
       const cartItems = await Cart.findOne({ userName: req.params.user })
         console.log(req.params.user)
-        console.log("cart " , cartItems)
+        console.log("cart " , cartItems.length)
       if (cartItems) {
         const successResponse = {
           message: 'Service fetched successfully',

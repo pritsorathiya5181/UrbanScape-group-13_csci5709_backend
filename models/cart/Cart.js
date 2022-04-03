@@ -1,3 +1,5 @@
+//Author : Aeshna Verma (B00880776)
+
 const mongoose = require('mongoose')
 
 const CartItemSchema = new mongoose.Schema(
