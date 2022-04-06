@@ -8,8 +8,7 @@ exports.getAllCartItems = async (req, res, next) => {
     try {
 
       const cartItems = await Cart.findOne({ userName: req.params.user })
-        console.log(req.params.user)
-        console.log("cart " , cartItems.length)
+
       if (cartItems) {
         const successResponse = {
           message: 'Service fetched successfully',
@@ -68,6 +67,7 @@ exports.getAllCartItems = async (req, res, next) => {
     })
 
   }
+
   
 exports.deleteCartItem = async (req, res, next) => {
 
