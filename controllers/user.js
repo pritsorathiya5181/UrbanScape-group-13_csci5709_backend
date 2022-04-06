@@ -1,43 +1,190 @@
+const Professional = require('../models/professional/Professional')
 const User = require('../models/user/User')
+const bcrypt = require('bcryptjs')
 
 exports.updateUser = async (req, res, next) => {
   if (req.body.password) {
-    req.body.password = CryptoJS.AES.encrypt(
-      req.body.password,
-      process.env.PASS_SEC
-    ).toString()
+    req.body.password = bcrypt.hashSync(req.body.password, 10)
   }
 
   try {
-    const updatedUser = await User.findByIdAndUpdate(
-      req.params.id,
+    const updatedUser = await User.findOneAndUpdate(
+      { email: req.params.email },
       {
         $set: req.body,
       },
       { new: true }
     )
-    res.status(200).json(updatedUser)
+
+    if (updatedUser) {
+      const successResponse = {
+        message: 'User updated successfully',
+        success: true,
+        user: updatedUser,
+      }
+      res.status(200).json(successResponse)
+    } else {
+      const errorResponse = {
+        message: 'No User found',
+        success: false,
+      }
+      res.status(404).json(errorResponse)
+    }
   } catch (err) {
-    res.status(500).json(err)
+    const errorResponse = {
+      message: err,
+      success: false,
+    }
+    res.status(500).json(errorResponse)
   }
 }
 
-exports.deleteUser = async (req, res, next) => {
+exports.updateProfessionalUser = async (req, res, next) => {
+  if (req.body.password) {
+    req.body.password = bcrypt.hashSync(req.body.password, 10)
+  }
+
   try {
-    await User.findByIdAndDelete(req.params.id)
-    res.status(200).json('User has been deleted...')
+    const updatedUser = await Professional.findOneAndUpdate(
+      { email: req.params.email },
+      {
+        $set: req.body,
+      },
+      { new: true }
+    )
+
+    if (updatedUser) {
+      const successResponse = {
+        message: 'Professional updated successfully',
+        success: true,
+        user: updatedUser,
+      }
+      res.status(200).json(successResponse)
+    } else {
+      const errorResponse = {
+        message: 'No Professional found',
+        success: false,
+      }
+      res.status(404).json(errorResponse)
+    }
+  } catch (err) {
+    const errorResponse = {
+      message: err,
+      success: false,
+    }
+    res.status(500).json(errorResponse)
+  }
+}
+
+exports.deleteCustomerUser = async (req, res, next) => {
+  try {
+    const deleteuser = await User.findOneAndDelete({ email: req.params.email })
+
+    if (deleteuser) {
+      const successResponse = {
+        message: 'User deleted successfully',
+        success: true,
+      }
+      res.status(200).json(successResponse)
+    } else {
+      const errorResponse = {
+        message: 'No User found',
+        success: false,
+      }
+      res.status(404).json(errorResponse)
+    }
   } catch (error) {
-    res.status(500).json(error)
+    const errorResponse = {
+      message: error,
+      success: false,
+    }
+    res.status(500).json(errorResponse)
   }
 }
 
-exports.getUser = async (req, res, next) => {
+exports.deleteProfessionalUser = async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.id)
-    const { password, ...others } = user._doc
-    res.status(200).json(others)
-  } catch (err) {
-    res.status(500).json(err)
+    const deleteprofessional = await Professional.findOneAndDelete({
+      email: req.params.email,
+    })
+
+    if (deleteprofessional) {
+      const successResponse = {
+        message: 'Professional deleted successfully',
+        success: true,
+      }
+      res.status(200).json(successResponse)
+    } else {
+      const errorResponse = {
+        message: 'No Professional found',
+        success: false,
+      }
+      res.status(404).json(errorResponse)
+    }
+  } catch (error) {
+    const errorResponse = {
+      message: error,
+      success: false,
+    }
+    res.status(500).json(errorResponse)
+  }
+}
+
+//get a customer by id controller
+exports.getCustomerUser = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ email: req.params.email })
+
+    if (user) {
+      const { password, ...others } = user._doc
+      const successResponse = {
+        message: 'User fetched successfully',
+        success: true,
+        user: others,
+      }
+      res.status(200).json(successResponse)
+    } else {
+      const errorResponse = {
+        message: 'No User found',
+        success: false,
+      }
+      res.status(404).json(errorResponse)
+    }
+  } catch (error) {
+    const errorResponse = {
+      message: error,
+      success: false,
+    }
+    res.status(500).json(errorResponse)
+  }
+}
+
+//get a professional by id controller
+exports.getProfessionalUser = async (req, res, next) => {
+  try {
+    const professional = await Professional.findOne({ email: req.params.email })
+
+    if (professional) {
+      const { password, ...others } = professional._doc
+      const successResponse = {
+        message: 'professional fetched successfully',
+        success: true,
+        user: others,
+      }
+      res.status(200).json(successResponse)
+    } else {
+      const errorResponse = {
+        message: 'No professional found',
+        success: false,
+      }
+      res.status(404).json(errorResponse)
+    }
+  } catch (error) {
+    const errorResponse = {
+      message: error,
+      success: false,
+    }
+    res.status(500).json(errorResponse)
   }
 }
 

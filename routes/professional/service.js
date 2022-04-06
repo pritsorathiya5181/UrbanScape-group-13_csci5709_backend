@@ -6,7 +6,7 @@ const orderController = require('../../controllers/order')
 
 //service stats
 router.get(
-  '/stats/:professionalId',
+  '/stats/:professionalId/:professionalEmail',
   orderController.fetchOrders,
   serviceController.fetchAllMyServices,
   serviceController.getServiceStats

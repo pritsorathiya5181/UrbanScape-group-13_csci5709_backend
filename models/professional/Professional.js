@@ -13,6 +13,8 @@ const ProfessionalSchema = new mongoose.Schema(
     workinghours: { type: String, required: true },
     preferredservice: { type: String, required: true },
     preferredlocation: { type: String, required: true },
+    photoUrl: { type: String },
+    about: { type: String },
   },
   { timestamps: true }
 )
