@@ -93,11 +93,12 @@ exports.approveServiceRequest = async (req, res, next) => {
         var transporter = nodemailer.createTransport({
           service: 'gmail',
           auth: {
-            user: process.env.email || 'fresky.france@gmail.com',
-            pass: process.env.pass || 'mynameisprit@5181',
+            user: process.env.email || 'g13urbanscape@gmail.com',
+            pass: process.env.pass || 'Urbanscape@1234',
           },
         })
 
+        console.log('clientEmail', clientEmail)
         var mailOptions = {
           from: process.env.email,
           to: clientEmail,
@@ -138,6 +139,7 @@ exports.approveServiceRequest = async (req, res, next) => {
           }
         })
       } else {
+        console.log('Not Changed')
         const errorResponse = {
           message: 'No Service found',
           success: false,
@@ -145,6 +147,7 @@ exports.approveServiceRequest = async (req, res, next) => {
         res.status(404).json(errorResponse)
       }
     } else {
+      console.log('order not found')
       const errorResponse = {
         message: 'No Service found',
         success: false,
@@ -152,6 +155,7 @@ exports.approveServiceRequest = async (req, res, next) => {
       res.status(404).json(errorResponse)
     }
   } catch (err) {
+    console.log('error', err)
     const errorResponse = {
       message: err,
       success: false,
@@ -164,6 +168,8 @@ exports.approveServiceRequest = async (req, res, next) => {
 exports.cancelServiceRequest = async (req, res, next) => {
   const { orderId } = req.params
   const { itemNo, professionalEmail } = req.body
+
+  console.log('email', orderId, professionalEmail)
 
   let isChanged = false
   try {
@@ -178,8 +184,9 @@ exports.cancelServiceRequest = async (req, res, next) => {
 
             // orderResponse.professionalName =
             //   orderResponse.professionalName.concat(' ', professionalName)
-            orderResponse.professionalName =
-              orderResponse.professionalName.concat(' ', professionalEmail)
+            orderResponse.professionalName = orderResponse.professionalName
+              ? orderResponse.professionalName?.concat(' ', professionalEmail)
+              : professionalEmail
 
             // orderResponse.orderItemStatus = 'Cancelled'
             return orderResponse
@@ -187,11 +194,12 @@ exports.cancelServiceRequest = async (req, res, next) => {
         }
         return order
       })
+      console.log(order)
 
       if (isChanged) {
         await order.save()
         const successResponse = {
-          message: 'Service Rejected ',
+          message: 'Service Rejected',
           success: true,
         }
 
@@ -215,20 +223,19 @@ exports.cancelServiceRequest = async (req, res, next) => {
       message: err,
       success: false,
     }
+    console.log(err)
     res.status(500).json(errorResponse)
   }
 }
 
-
 exports.submitOrder = async (req, res, next) => {
-     
   const newOrder = new Order({
     orderId: req.body.orderId,
     userName: req.params.user,
-    orderAmount :req.body.orderAmount,
-    discountAmount : req.body.discountAmount,
+    orderAmount: req.body.orderAmount,
+    discountAmount: req.body.discountAmount,
     taxAmount: req.body.taxAmount,
-    orderDetails:  req.body.orderDetails
+    orderDetails: req.body.orderDetails,
   })
 
   try {

@@ -233,11 +233,12 @@ exports.getServiceStats = async (req, res, next) => {
 
         if (orderDetail.orderItemStatus === 'Pending') {
           const professionalArr = orderDetail.professionalName?.split(' ')
-          const hasProfessional = professionalArr.filter(
+          const hasProfessional = professionalArr?.filter(
             (name) =>
               name.toLowerCase() === req.params.professionalEmail.toLowerCase()
           )
-          if (hasProfessional.length > 0) {
+          console.log(hasProfessional)
+          if (hasProfessional?.length > 0) {
             serviceStats.cancelledRequests.push(orderResponse)
             serviceStats.processedRequests.push(orderResponse)
           } else {
