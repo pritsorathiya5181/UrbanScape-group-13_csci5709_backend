@@ -6,7 +6,7 @@ const Cart = require('../models/cart/Cart')
 exports.getAllCartItems = async (req, res, next) => {
 
     try {
-      console.log("Get cart items")
+      // console.log("Get cart items")
       const cartItems = await Cart.findOne({ userName: req.params.user })
 
       if (cartItems) {
@@ -37,7 +37,7 @@ exports.getAllCartItems = async (req, res, next) => {
 
   exports.addToCart = async (req, res, next) => {
      
-    console.log("Add to cart ")
+    // console.log("Add to cart ")
     const userName = {userName : req.params.user}
 
     Cart.findOneAndUpdate(userName, { 
@@ -74,7 +74,7 @@ exports.deleteCartItem = async (req, res, next) => {
 
 
     try {
-      console.log("Delete cart items")
+      // console.log("Delete cart items")
     const price = req.body.servicePrice
     const itemId = req.body.itemId
 
@@ -113,7 +113,7 @@ exports.deleteCartItem = async (req, res, next) => {
 }
 
 exports.createCart = async (req, res, next) => {
-  console.log("Create cart ")
+   console.log("Create cart ")
 
   const cartExists = await Cart.exists({ userName: req.params.user});
 
@@ -158,7 +158,7 @@ else{
 exports.emptyCart = async (req, res, next) => {
 
   try {
-  console.log("Empty cart", req.body.user)
+  // console.log("Empty cart", req.body.user)
   const zeroAmount = 0
   const updatedCart = await Cart.findOneAndUpdate(
   
