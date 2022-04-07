@@ -10,6 +10,7 @@ const newsletterSubscriptionRoute = require('./routes/customer/newsletterSubscri
 const servicesRoute = require('./routes/services')
 const serviceRoute = require('./routes/professional/service')
 const supportRoute = require('./routes/professional/support')
+const reviewRoute = require('./routes/customer/reviews')
 
 const app = express()
 
@@ -27,9 +28,10 @@ app.use('/api/order', orderRoute)
 app.use('/api/cart', cartRoute)
 app.use('/api/services', servicesRoute)
 app.use('/api/subscribe', newsletterSubscriptionRoute)
-
+app.use('/api/reviews',reviewRoute)
 app.use('/api/service', serviceRoute)
 app.use('/api/support', supportRoute)
+
 
 app.get('/', (req, res, next) => {
   console.log('index route ')
