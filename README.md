@@ -30,7 +30,9 @@
 12. /api/cart/:user - this is a GET API, used to get all the cart items for a user
 13. /api/cart/:user - this is a POST API, used to save the item to the cart
 14. /api/cart/:user - this is a DELETE API, used to remove an item from the cart for a user
-
+15. /api/cart/:user - this is a PUT API, used to create an empty cart when a customer is signed up
+16. /api/cart/ - this is a DELETE API, used to empty the cart after order is placed
+17. /api/order/payment/:user - this is a POST API, used to save the order details once payment is successful
 
 ## Team Work
 
