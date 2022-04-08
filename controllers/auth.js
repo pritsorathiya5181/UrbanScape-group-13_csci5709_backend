@@ -7,8 +7,8 @@ var nodemailer = require('nodemailer')
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'aditi2007sonawane@gmail.com',
-    pass: 'qdjimcajmsbvucck',
+    user: process.env.email || 'g13urbanscape@gmail.com',
+    pass: process.env.pass || 'Urbanscape@1234',
   },
 })
 
@@ -183,7 +183,10 @@ exports.professionallogin = (req, res, next) => {
   }
 }
 
-const fromMail = 'aditi2007sonawane@gmail.com'
+const fromMail =
+  process.env.email ||
+  'g13urbanscape@gmail.com' ||
+  'aditi2007sonawane@gmail.com'
 //forgetpassword
 exports.forgetpassword = (req, res, next) => {
   try {
@@ -191,6 +194,7 @@ exports.forgetpassword = (req, res, next) => {
     if (!req.params.email) {
       res.send({ message: 'Invalid parameters' })
     }
+    console.log(fromMail)
     var email = req.params.email
     User.findOne({})
       .where('email')

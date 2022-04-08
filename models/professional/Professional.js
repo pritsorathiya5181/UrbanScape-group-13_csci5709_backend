@@ -1,7 +1,12 @@
-/*  Author: Prit Ajaykumar Sorathiya - B00890175 */
+/**
+ * Author: Prit Ajaykumar Sorathiya - B00890175
+ */
 
 const mongoose = require('mongoose')
 
+/**
+ * ProfessionalSchema is a mongoose schema for professional user collection
+ */
 const ProfessionalSchema = new mongoose.Schema(
   {
     firstname: { type: String, required: true },
