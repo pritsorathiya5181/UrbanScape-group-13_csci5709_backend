@@ -32,8 +32,8 @@ exports.addSubscription = async (req, res, next) => {
             let transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
-                  user: process.env.email || 'fresky.france@gmail.com',
-                  pass: process.env.pass || 'mynameisprit@5181',
+                  user: process.env.email,
+                  pass: process.env.pass,
                 },
               });
               let mailOptions = {
